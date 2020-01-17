@@ -1,19 +1,19 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const logger = require("morgan")
+let express = require("express");
+let mongoose = require("mongoose");
+let bodyParser = require("body-parser");
+let logger = require("morgan")
 
 //scraping tools
 //axios is promised-based http library
 //it works on the client and on the server
-const axios = require("axios");
-const cheerio = require("cheerio");
+let axios = require("axios");
+let cheerio = require("cheerio");
 
 //require all models
-const db = require("./models/Article");
+let db = require("./models/Article");
 
 //initalize express
-const app = express();
+let app = express();
 
 //configure middleware
 //use morgan logger to log requests
@@ -32,11 +32,11 @@ const exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-const PORT = 3000;
+const PORT = 3300;
 // app.listen(PORT, function () {
 //     console.log("listening on PORT " + PORT)
 // })
-const linkie = "https://www.nytimes.com/"
+let linkie = "https://www.nytimes.com/"
 
 
 mongoose.connect("mongodb://localhost/newsScraper", {
@@ -51,6 +51,7 @@ app.get("/scrape", function (req, res) {
     axios.get(linkie).then(function (response) {
         let $ = cheerio.load(response.data);
         //grab every "" within an article tag and do the following:
+
         $("article h2").each(function (i, element) {
             let result = {};
 
@@ -58,18 +59,9 @@ app.get("/scrape", function (req, res) {
             result.title = element.children[0].data
             result.link = linkie + sLink
             console.log(result)
+
+            db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
         });
-
-
-
-
-        // $("article a").each(function (i, element) {
-        //     let dinkie = element.attribs.href;
-        //     result.i.link = linkie + dinkie
-        // })
-
-        // console.log(result)
-        // //send message to client
         res.send("Scrape Complete");
 
 
@@ -80,9 +72,9 @@ app.get("/scrape", function (req, res) {
 //route for getting all aritcles from the db
 app.get("/articles", function (req, res) {
     //grab every document in the Articles collextion
-    db.Article.find({})
+    db.find({})
         .then(function (dbArticle) {
-            RegExp.json(dbArticle);
+            res.json(dbArticle);
         })
         .catch(function (err) {
             res.json(err);
