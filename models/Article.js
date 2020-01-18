@@ -11,10 +11,10 @@ let ArticleSchema = new Schema({
         required: true
     },
     // 'summary' is required and of type string
-    // summary: {
-    //     type: String,
-    //     required: true
-    // },
+    summary: {
+        type: String,
+        required: true
+    },
     // 'URL' or 'link' is required and of type string
     link: {
         type: String,

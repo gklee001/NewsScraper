@@ -58,8 +58,10 @@ app.get("/scrape", function (req, res) {
             const sLink = element.parent.parent.attribs.href
             result.title = element.children[0].data
             result.link = linkie + sLink
+            if (element.parent.next != null) {
+                result.summary = element.parent.next.children[0].data
+            }
             console.log(result)
-
             db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
         });
         res.send("Scrape Complete");
