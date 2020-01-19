@@ -3,29 +3,23 @@ let mongoose = require("mongoose");
 let bodyParser = require("body-parser");
 let logger = require("morgan")
 
-//scraping tools
-//axios is promised-based http library
-//it works on the client and on the server
+
 let axios = require("axios");
 let cheerio = require("cheerio");
 
-//require all models
 let db = require("./models/Article");
 
-//initalize express
 let app = express();
 
-//configure middleware
-//use morgan logger to log requests
+
 app.use(logger("dev"));
-//parse request body as JSON
+
 app.use(express.urlencoded({
     extended: true
 }));
 
 app.use(express.json());
 
-//make public a static folder
 app.use(express.static("/public"));
 
 const exphbs = require("express-handlebars");
@@ -51,7 +45,7 @@ app.get("/", function (req, res) {
 app.get("/scrape", function (req, res) {
     axios.get(linkie).then(function (response) {
         let $ = cheerio.load(response.data);
-        //grab every "" within an article tag and do the following:
+
         let count = 0;
 
         $("article h2").each(function (i, element) {
@@ -64,7 +58,6 @@ app.get("/scrape", function (req, res) {
                 result.link = linkie + sLink
             }
             if (typeof result.title !== "undefined") {
-                // console.log(result)
                 db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
                 count++;
             }
@@ -77,9 +70,8 @@ app.get("/scrape", function (req, res) {
 
 });
 
-//route for getting all aritcles from the db
 app.get("/articles", function (req, res) {
-    //grab every document in the Articles collection
+
     db.find({})
         .then(function (dbArticle) {
             res.json(dbArticle);
@@ -117,3 +109,4 @@ app.post("/articles/:id", function (req, res) {
         });
 });
 
+///need to add buttons to save and delete aticles as well as add notes
