@@ -53,18 +53,22 @@ app.get("/scrape", function (req, res) {
         let $ = cheerio.load(response.data);
         //grab every "" within an article tag and do the following:
         let count = 0;
-        $("article h2").each(function (i, element) {
-            let result = {};
-            count++;
-            if (element.parent.next != null && element.children[0].data != "undefined") {
-                result.summary = element.parent.next.children[0].data
-                const sLink = element.parent.parent.attribs.href
-                result.title = element.children[0].data
-                result.link = linkie + sLink
-            }
-            console.log(result)
-            db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
-        });
+        if (count < 10) {
+            $("article h2").each(function (i, element) {
+                let result = {};
+
+                if (element.parent.next != null && element.children[0].data == "undefined") {
+                    result.summary = element.parent.next.children[0].data;
+                    const sLink = element.parent.parent.attribs.href;
+                    result.title = element.children[0].data;
+                    result.link = linkie + sLink
+                }
+                count++
+                console.log(result)
+                db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
+            });
+        }
+
 
     });
 
