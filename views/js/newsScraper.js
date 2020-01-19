@@ -6,7 +6,7 @@
 //     })
 // })
 $(document).ready(function () {
-    $("button .btn").on("click", function () {
-        alert("Clicked")
-    })
+    // $("button .btn").on("click", function () {
+    //     alert("Clicked")
+    // })
 })

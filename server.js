@@ -36,7 +36,7 @@ const PORT = 3300;
 // app.listen(PORT, function () {
 //     console.log("listening on PORT " + PORT)
 // })
-let linkie = "https://www.nytimes.com/"
+let linkie = "https://www.nytimes.com"
 
 
 mongoose.connect("mongodb://localhost/newsScraper", {
@@ -64,16 +64,14 @@ app.get("/scrape", function (req, res) {
             console.log(result)
             db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
         });
-        res.send("Scrape Complete " + count);
-
-        console.log(count)
 
     });
+
 });
 
 //route for getting all aritcles from the db
 app.get("/articles", function (req, res) {
-    //grab every document in the Articles collextion
+    //grab every document in the Articles collection
     db.find({})
         .then(function (dbArticle) {
             res.json(dbArticle);
