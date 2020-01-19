@@ -39,7 +39,7 @@ app.listen(PORT, function () {
 let linkie = "https://www.nytimes.com"
 
 
-mongoose.connect("mongodb://localhost/newsScraper", {
+mongoose.connect("mongodb://newsScraper:newsScraper@ds021694.mlab.com:21694/heroku_6zb42x44", {
     useNewUrlParser: true
 });
 
