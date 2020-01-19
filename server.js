@@ -40,7 +40,7 @@ app.listen(PORT, function () {
 let linkie = "https://www.nytimes.com"
 
 
-mongoose.connect("mongodb://newsScraper:newsScraper@ds021694.mlab.com:21694/heroku_6zb42x44", {
+mongoose.connect("mongodb://mongoscrape:mongoscrape1@ds021694.mlab.com:21694/heroku_6zb42x44", {
     useNewUrlParser: true
 });
 
@@ -53,27 +53,24 @@ app.get("/scrape", function (req, res) {
         let $ = cheerio.load(response.data);
         //grab every "" within an article tag and do the following:
         let count = 0;
-        if (count < 5) {
-            $("article h2").each(function (i, element) {
-                let result = {};
 
-                if (element.parent.next != null) {
-                    result.summary = element.parent.next.children[0].data;
-                    const sLink = element.parent.parent.attribs.href;
-                    result.title = element.children[0].data;
-                    result.link = linkie + sLink
-                }
-                if (typeof result.title !== "undefined") {
-                    console.log(result)
-                    db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
-                    count++
-                }
-                if (count === 5) {
-                    break;
-                }
+        $("article h2").each(function (i, element) {
+            let result = {};
 
-            });
-        }
+            if (element.parent.next != null) {
+                result.summary = element.parent.next.children[0].data;
+                const sLink = element.parent.parent.attribs.href;
+                result.title = element.children[0].data;
+                result.link = linkie + sLink
+            }
+            if (typeof result.title !== "undefined") {
+                // console.log(result)
+                db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
+                count++;
+            }
+            return count < 3;
+        });
+
 
 
     });
