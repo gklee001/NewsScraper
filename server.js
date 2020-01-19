@@ -56,11 +56,11 @@ app.get("/scrape", function (req, res) {
         $("article h2").each(function (i, element) {
             let result = {};
             count++;
-            const sLink = element.parent.parent.attribs.href
-            result.title = element.children[0].data
-            result.link = linkie + sLink
             if (element.parent.next != null) {
                 result.summary = element.parent.next.children[0].data
+                const sLink = element.parent.parent.attribs.href
+                result.title = element.children[0].data
+                result.link = linkie + sLink
             }
             console.log(result)
             db.create(result).then(function (dbArticle) { console.log(dbArticle) }).catch(function (err) { console.log(err); });
