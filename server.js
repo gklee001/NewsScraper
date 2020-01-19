@@ -56,7 +56,7 @@ app.get("/scrape", function (req, res) {
         $("article h2").each(function (i, element) {
             let result = {};
             count++;
-            if (element.parent.next != null) {
+            if (element.parent.next != null && element.children[0].data != "undefined") {
                 result.summary = element.parent.next.children[0].data
                 const sLink = element.parent.parent.attribs.href
                 result.title = element.children[0].data
