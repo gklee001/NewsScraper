@@ -33,9 +33,9 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 const PORT = 3300;
-// app.listen(PORT, function () {
-//     console.log("listening on PORT " + PORT)
-// })
+app.listen(PORT, function () {
+    console.log("listening on PORT " + PORT)
+})
 let linkie = "https://www.nytimes.com"
 
 
