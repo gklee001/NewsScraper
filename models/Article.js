@@ -8,17 +8,17 @@ let ArticleSchema = new Schema({
     //'headline' required and of type string
     title: {
         type: String,
-        required: true
+        required: false
     },
     // 'summary' is required and of type string
     summary: {
         type: String,
-        required: true
+        required: false
     },
     // 'URL' or 'link' is required and of type string
     link: {
         type: String,
-        required: true
+        required: false
     }
 });
 //this creates our model from the above schema using mongoose
